@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "654737482445",
+    "project_id": "mist-b3fb5",
+    "storage_bucket": "mist-b3fb5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:654737482445:android:44f841cd9f784846adbf84",
+        "android_client_info": {
+          "package_name": "com.example.mist"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "654737482445-teem47tnbnms64g0p63109i8nmgrhn6e.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDhVmNpp0FJ8_iHdeGQmuOQjLTebgDLvAk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "654737482445-teem47tnbnms64g0p63109i8nmgrhn6e.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
