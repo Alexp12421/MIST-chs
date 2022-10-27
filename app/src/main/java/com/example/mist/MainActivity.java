@@ -18,6 +18,7 @@ public class MainActivity extends AppCompatActivity {
 
     public TextView main_text;
     public Button registerButton;
+    public Button loginButton;
     public Titlu titlu;
     private com.google.firebase.database.DatabaseReference databaseReference;
     FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -30,11 +31,20 @@ public class MainActivity extends AppCompatActivity {
 
         registerButton = (Button)findViewById(R.id.id_RegisterButton);
 
+        loginButton = (Button)findViewById(R.id.id_LoginButton);
+
 
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 openRegister();
+            }
+        });
+
+        loginButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openLogin();
             }
         });
 
@@ -55,6 +65,11 @@ public class MainActivity extends AppCompatActivity {
 
     public void openRegister(){
         Intent intent = new Intent(this, RegisterActivity.class);
+        startActivity(intent);
+    }
+
+    public void openLogin(){
+        Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
     }
 }
