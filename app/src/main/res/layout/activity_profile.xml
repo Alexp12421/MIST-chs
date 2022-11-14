@@ -29,4 +29,17 @@
       android:text="Store"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toEndOf="parent" />
+
+  <Button
+      android:id="@+id/insert_image"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="159dp"
+      android:layout_marginEnd="158dp"
+      android:layout_marginBottom="345dp"
+      android:text="Insert Image"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
