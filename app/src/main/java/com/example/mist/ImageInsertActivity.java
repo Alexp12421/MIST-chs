@@ -5,8 +5,12 @@ import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -15,6 +19,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -23,6 +28,8 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -33,7 +40,8 @@ import com.squareup.picasso.Picasso;
 import java.io.ByteArrayOutputStream;
 import java.util.UUID;
 
-public class ImageInsertActivity extends AppCompatActivity {
+public class ImageInsertActivity extends AppCompatActivity implements View.OnClickListener{
+
 
     Button selectButton, uploadButton, showUploadedImages;
     private ImageView imagePreview;
@@ -82,6 +90,7 @@ public class ImageInsertActivity extends AppCompatActivity {
                 startActivity(new Intent(ImageInsertActivity.this, DownloadUploadedImages.class));
             }
         });
+
     }
 
     private void showImageSelectorDialog() {
@@ -132,4 +141,15 @@ public class ImageInsertActivity extends AppCompatActivity {
             });
         }
     }
+
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()){
+
+        }
+    }
+
+
+
 }

@@ -4,42 +4,55 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ProfileActivity">
+    tools:context=".ProfileActivity"
+    android:background="@drawable/store_background"
+    android:theme="@style/Theme.Mist.AppBarOverlay"
+    app:popupTheme="@style/Theme.Mist.PopupOverlay"
+    >
 
   <TextView
-      android:id="@+id/textView"
-      android:layout_width="wrap_content"
+      android:id="@+id/usernameProfile"
+      android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:layout_marginStart="176dp"
-      android:layout_marginTop="186dp"
-      android:layout_marginEnd="177dp"
-      android:layout_marginBottom="526dp"
-      android:text="WELCOME!!!"
-      app:layout_constraintBottom_toBottomOf="parent"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toTopOf="parent" />
+      android:gravity="center"
+      android:textColor="@color/white"
+      android:textSize="35sp"
+      android:textStyle="bold"
+      app:layout_constraintBottom_toTopOf="@+id/go_store"
+      android:layout_marginBottom="300dp"
+      tools:layout_editor_absoluteX="50dp" />
 
   <Button
-      android:id="@+id/store"
+      android:id="@+id/go_store"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:layout_marginEnd="159dp"
-      android:layout_marginBottom="439dp"
+      android:layout_marginEnd="80dp"
+      android:layout_marginBottom="250dp"
       android:text="Store"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toEndOf="parent" />
 
+    <Button
+        android:id="@+id/insert_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="159dp"
+        android:layout_marginEnd="158dp"
+        android:layout_marginBottom="345dp"
+        android:text="Insert Image"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+      />
   <Button
-      android:id="@+id/insert_image"
+
+      android:id="@+id/go_lib"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:layout_marginStart="159dp"
-      android:layout_marginEnd="158dp"
-      android:layout_marginBottom="345dp"
-      android:text="Insert Image"
+      android:layout_marginLeft="80dp"
+      android:layout_marginBottom="250dp"
+      android:text="Library"
       app:layout_constraintBottom_toBottomOf="parent"
-      app:layout_constraintEnd_toEndOf="parent"
+
       app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

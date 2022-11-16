@@ -26,7 +26,17 @@
         </activity>
         <activity
             android:name=".ImageInsertActivity"
-            android:exported="false">
+            android:exported="false"
+            android:theme="@style/Theme.Mist.NoActionBar">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".LibraryActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Mist.NoActionBar">
+
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -41,7 +51,8 @@
         </activity>
         <activity
             android:name=".ProfileActivity"
-            android:exported="false">
+            android:exported="false"
+            android:theme="@style/Theme.Mist.NoActionBar">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
