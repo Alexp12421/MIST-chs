@@ -32,10 +32,19 @@ public class ProfileActivity extends AppCompatActivity  implements View.OnClickL
 
     public TextView library;
 
+    public Button insert_img;
+
     private FirebaseUser user;
     private DatabaseReference reference;
 
     private String userID;
+
+    public void setLocalUser(){
+        user = FirebaseAuth.getInstance().getCurrentUser();
+        reference = FirebaseDatabase.getInstance().getReference("Users");
+        userID = user.getUid();
+    }
+
 
 
     @Override
@@ -53,12 +62,13 @@ public class ProfileActivity extends AppCompatActivity  implements View.OnClickL
         library = (TextView) findViewById(R.id.go_lib);
         library.setOnClickListener(this);
 
-        user = FirebaseAuth.getInstance().getCurrentUser();
-        reference = FirebaseDatabase.getInstance().getReference("Users");
-        userID = user.getUid();
+
 
         final TextView usernameProfile = (TextView) findViewById(R.id.usernameProfile);
 
+
+
+        setLocalUser(); //setting the current user
 
         reference.child(userID).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -81,6 +91,14 @@ public class ProfileActivity extends AppCompatActivity  implements View.OnClickL
                 Toast.makeText(ProfileActivity.this, "Something wrong", Toast.LENGTH_LONG).show();
             }
         });
+
+        System.out.println(user.getEmail());
+
+
+        insert_img = (Button)findViewById(R.id.insert_image);
+        if(user.getEmail().equals("admin@gmail.com") == false)
+            insert_img.setVisibility(View.INVISIBLE);
+
 
 
     }
