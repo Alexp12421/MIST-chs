@@ -34,6 +34,8 @@ public class ProfileActivity extends AppCompatActivity  implements View.OnClickL
 
     public Button insert_img;
 
+    public TextView qrScan;
+
     private FirebaseUser user;
     private DatabaseReference reference;
 
@@ -62,6 +64,8 @@ public class ProfileActivity extends AppCompatActivity  implements View.OnClickL
         library = (TextView) findViewById(R.id.go_lib);
         library.setOnClickListener(this);
 
+        qrScan = (TextView) findViewById(R.id.go_qrScan);
+        qrScan.setOnClickListener(this);
 
 
         final TextView usernameProfile = (TextView) findViewById(R.id.usernameProfile);
@@ -91,13 +95,13 @@ public class ProfileActivity extends AppCompatActivity  implements View.OnClickL
                 Toast.makeText(ProfileActivity.this, "Something wrong", Toast.LENGTH_LONG).show();
             }
         });
-
-        System.out.println(user.getEmail());
-
-
         insert_img = (Button)findViewById(R.id.insert_image);
         if(user.getEmail().equals("admin@gmail.com") == false)
             insert_img.setVisibility(View.INVISIBLE);
+
+        qrScan= (Button)findViewById(R.id.go_qrScan);
+        if(user.getEmail().equals("admin@gmail.com") == false)
+            qrScan.setVisibility(View.INVISIBLE);
 
 
 
@@ -120,6 +124,10 @@ public class ProfileActivity extends AppCompatActivity  implements View.OnClickL
                 break;
             case R.id.balance:
                 startActivity(new Intent(this, WalletActivity.class));
+                break;
+
+            case R.id.go_qrScan:
+                startActivity(new Intent(this, QRScanActivity.class));
                 break;
 
 
