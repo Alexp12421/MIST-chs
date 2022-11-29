@@ -22,6 +22,18 @@
       android:layout_marginBottom="300dp"
       tools:layout_editor_absoluteX="50dp" />
 
+  <TextView
+      android:id="@+id/show_balance"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginBottom="212dp"
+      android:gravity="center"
+      android:textColor="@color/white"
+      android:textSize="35sp"
+      android:textStyle="bold"
+      app:layout_constraintBottom_toTopOf="@+id/go_store"
+      tools:layout_editor_absoluteX="-16dp" />
+
   <Button
       android:id="@+id/go_store"
       android:layout_width="wrap_content"

@@ -25,14 +25,23 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.mlkit.vision.barcode.BarcodeScanner;
 import com.google.mlkit.vision.barcode.BarcodeScanning;
 import com.google.mlkit.vision.barcode.common.Barcode;
 import com.google.mlkit.vision.common.InputImage;
 
+import java.util.HashMap;
 import java.util.List;
 
 public class QRScanActivity extends AppCompatActivity implements View.OnClickListener{
@@ -51,6 +60,11 @@ public class QRScanActivity extends AppCompatActivity implements View.OnClickLis
 
     InputImage inputImage;
     BarcodeScanner scanner;
+
+    private FirebaseUser user;
+    private DatabaseReference reference;
+
+    private String userID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -129,6 +143,24 @@ public class QRScanActivity extends AppCompatActivity implements View.OnClickLis
 
     }
 
+    public void setLocalUser(){
+        user = FirebaseAuth.getInstance().getCurrentUser();
+        reference = FirebaseDatabase.getInstance().getReference("Users");
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+        userID = user.getUid();
+
+    }
+
     private void processImageQr() {
 
         qrImgage.setVisibility(View.GONE);
@@ -157,8 +189,50 @@ public class QRScanActivity extends AppCompatActivity implements View.OnClickLis
                                             "Url : " + url + "\n");
                                     break;
                                 default:
-                                    String data = barcode.getDisplayValue();
+                                    String data = barcode.getDisplayValue();/// data de prelucrat de aici pt wallet/joc
                                     tvResult.setText("Result : " + data);
+                                    if(data.startsWith("m/") == true)
+                                    {
+                                        setLocalUser();
+                                        reference.child(userID).addListenerForSingleValueEvent(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                                User userProfile = snapshot.getValue(User.class);
+
+                                                if(userProfile != null){
+                                                    String username = userProfile.getUsername();
+                                                    String email = userProfile.getEmail();
+
+                                                    //parsing the qr code to get the value of the balance we are adding to the wallet
+                                                    userProfile.addBalance(Float.valueOf(data.substring(data.indexOf("/")+1,data.indexOf("-"))));
+                                                    float wallet = userProfile.getWallet();
+
+                                                    HashMap User = new HashMap<>();
+                                                    User.put("email",email);
+                                                    User.put("username",username);
+                                                    User.put("wallet", wallet);
+                                                    reference.child(userID).updateChildren(User).addOnCompleteListener(new OnCompleteListener() {
+                                                        @Override
+                                                        public void onComplete(@NonNull Task task) {
+                                                            if(task.isSuccessful()){
+                                                                Toast.makeText(QRScanActivity.this, "Money successfully added to the wallet", Toast.LENGTH_LONG).show();
+                                                            }
+                                                            else{
+                                                                Toast.makeText(QRScanActivity.this, "Failed to add money to the wallet", Toast.LENGTH_LONG).show();
+                                                            }
+                                                        }
+                                                    });
+                                                }
+
+
+                                            }
+
+                                            @Override
+                                            public void onCancelled(@NonNull DatabaseError error) {
+                                                Toast.makeText(QRScanActivity.this, "Something wrong", Toast.LENGTH_LONG).show();
+                                            }
+                                        });
+                                    }
                                     break;
                             }
 

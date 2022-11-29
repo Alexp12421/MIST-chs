@@ -69,6 +69,7 @@ public class ProfileActivity extends AppCompatActivity  implements View.OnClickL
 
 
         final TextView usernameProfile = (TextView) findViewById(R.id.usernameProfile);
+        final TextView userBalance = (TextView) findViewById(R.id.show_balance);
 
 
 
@@ -80,10 +81,12 @@ public class ProfileActivity extends AppCompatActivity  implements View.OnClickL
                 User userProfile = snapshot.getValue(User.class);
 
                 if(userProfile != null){
-                    String username = userProfile.username;
-                    String email = userProfile.emial;
+                    String username = userProfile.getUsername();
+                    String email = userProfile.getEmail();
+                    float wallet = userProfile.getWallet();
 
                     usernameProfile.setText("Welcome " + username + " !");
+                    userBalance.setText(String.valueOf(wallet) + "$");
 
                 }
 
@@ -96,12 +99,12 @@ public class ProfileActivity extends AppCompatActivity  implements View.OnClickL
             }
         });
         insert_img = (Button)findViewById(R.id.insert_image);
-        if(user.getEmail().equals("admin@gmail.com") == false)
+        if(user.getEmail().equals("adminu@gmail.com") == false)
             insert_img.setVisibility(View.INVISIBLE);
 
-        qrScan= (Button)findViewById(R.id.go_qrScan);
-        if(user.getEmail().equals("admin@gmail.com") == false)
-            qrScan.setVisibility(View.INVISIBLE);
+//        qrScan= (Button)findViewById(R.id.go_qrScan);
+//        if(user.getEmail().equals("adminu@gmail.com") == false)
+//            qrScan.setVisibility(View.INVISIBLE);
 
 
 

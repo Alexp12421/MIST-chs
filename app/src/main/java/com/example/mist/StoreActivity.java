@@ -89,7 +89,7 @@ public class StoreActivity extends AppCompatActivity implements View.OnClickList
                 startActivity(new Intent(this, LibraryActivity.class));
                 break;
             case R.id.balance:
-                startActivity(new Intent(this, WalletActivity.class));
+                startActivity(new Intent(this, ProfileActivity.class));
                 break;
             case R.id.store:
                 startActivity(new Intent(this, StoreActivity.class));

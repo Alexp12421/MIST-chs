@@ -81,7 +81,7 @@ public class LibraryActivity extends AppCompatActivity implements View.OnClickLi
                 startActivity(new Intent(this, LibraryActivity.class));
                 break;
             case R.id.balance:
-                startActivity(new Intent(this, WalletActivity.class));
+                startActivity(new Intent(this, ProfileActivity.class));
                 break;
             case R.id.store:
                 startActivity(new Intent(this, StoreActivity.class));
