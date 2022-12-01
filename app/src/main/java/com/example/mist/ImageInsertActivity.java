@@ -22,6 +22,7 @@ import android.provider.MediaStore;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -46,6 +47,7 @@ public class ImageInsertActivity extends AppCompatActivity implements View.OnCli
     Button selectButton, uploadButton, showUploadedImages;
     private ImageView imagePreview;
     private ProgressBar progressBar;
+    private EditText gameName;
 
     FirebaseDatabase database;
     FirebaseStorage firebaseStorage;
@@ -64,6 +66,7 @@ public class ImageInsertActivity extends AppCompatActivity implements View.OnCli
         showUploadedImages = findViewById(R.id.showUploadedImages);
         imagePreview = findViewById(R.id.imagePreview);
         progressBar = findViewById(R.id.progressBar);
+        gameName = (EditText) findViewById(R.id.gameName);
 
         database = FirebaseDatabase.getInstance();
         firebaseStorage = FirebaseStorage.getInstance();
@@ -117,9 +120,10 @@ public class ImageInsertActivity extends AppCompatActivity implements View.OnCli
     });
 
     private void uploadImage(){
+        String imageName = gameName.getText().toString().trim();
         if(filePath!=null){
             progressBar.setVisibility(View.VISIBLE);
-            StorageReference ref = storageReference.child("images/" + UUID.randomUUID().toString());
+            StorageReference ref = storageReference.child("images/" + imageName);
             ref.putFile(filePath).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
