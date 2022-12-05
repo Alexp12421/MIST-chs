@@ -8,12 +8,50 @@
 
     <ImageView
         android:id="@+id/imageViewPreview"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
+        android:layout_width="140dp"
+        android:layout_height="133dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="32dp"
+        app:layout_constraintEnd_toStartOf="@+id/imageGameName"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/imageGameName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="8dp"
+        android:text="Game Name"
+        android:textSize="25dp"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_margin="10dp"
-        />
+        app:layout_constraintStart_toEndOf="@+id/imageViewPreview"
+        app:layout_constraintTop_toTopOf="@+id/imageViewPreview" />
+
+    <TextView
+        android:id="@+id/imageGamePrice"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Game Price"
+        android:textSize="25dp"
+        app:layout_constraintEnd_toEndOf="@id/imageGameName"
+        app:layout_constraintStart_toStartOf="@+id/imageGameName"
+        app:layout_constraintTop_toBottomOf="@+id/imageGameName" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="62dp"
+        android:text="Button"
+        app:layout_constraintEnd_toEndOf="@id/imageGamePrice"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/imageGamePrice"
+        app:layout_constraintTop_toBottomOf="@+id/imageGamePrice" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

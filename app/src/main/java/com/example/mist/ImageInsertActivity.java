@@ -27,8 +27,10 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
@@ -47,7 +49,7 @@ public class ImageInsertActivity extends AppCompatActivity implements View.OnCli
     Button selectButton, uploadButton, showUploadedImages;
     private ImageView imagePreview;
     private ProgressBar progressBar;
-    private EditText gameName;
+    private EditText gameName, gamePrice;
 
     FirebaseDatabase database;
     FirebaseStorage firebaseStorage;
@@ -67,6 +69,8 @@ public class ImageInsertActivity extends AppCompatActivity implements View.OnCli
         imagePreview = findViewById(R.id.imagePreview);
         progressBar = findViewById(R.id.progressBar);
         gameName = (EditText) findViewById(R.id.gameName);
+        gamePrice = (EditText) findViewById(R.id.gamePrice);
+
 
         database = FirebaseDatabase.getInstance();
         firebaseStorage = FirebaseStorage.getInstance();
@@ -121,16 +125,24 @@ public class ImageInsertActivity extends AppCompatActivity implements View.OnCli
 
     private void uploadImage(){
         String imageName = gameName.getText().toString().trim();
+        String imagePrice = gamePrice.getText().toString().trim();
+
         if(filePath!=null){
             progressBar.setVisibility(View.VISIBLE);
-            StorageReference ref = storageReference.child("images/" + imageName);
+            StorageReference ref = firebaseStorage.getReference().child("images").child(filePath.getLastPathSegment());
             ref.putFile(filePath).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    Task<Uri> downloadUrl = taskSnapshot.getStorage().getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
                         @Override
-                        public void onSuccess(Uri uri) {
-                            databaseReference.push().setValue(uri.toString());
+                        public void onComplete(@NonNull Task<Uri> task) {
+                            //databaseReference.push().setValue(uri.toString());
+                            String t = task.getResult().toString();
+
+                            DatabaseReference newEntry = databaseReference.push();
+                            newEntry.child("Game Name").setValue(imageName);
+                            newEntry.child("Game Price").setValue(imagePrice);
+                            newEntry.child("Game Image").setValue(t);
                             Toast.makeText(ImageInsertActivity.this,"Image uploaded successfully!",Toast.LENGTH_SHORT).show();
                             progressBar.setVisibility(View.GONE);
                         }

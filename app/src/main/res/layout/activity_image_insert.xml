@@ -30,14 +30,30 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="50dp"
         android:layout_marginEnd="50dp"
-        android:layout_marginBottom="100dp"
+        android:layout_marginBottom="30dp"
         android:gravity="center"
         android:hint="Game Name"
         android:textColor="@color/black"
         android:textSize="35dp"
-        app:layout_constraintBottom_toTopOf="@+id/imagePreview"
+        app:layout_constraintBottom_toTopOf="@+id/gamePrice"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.494"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/gamePrice"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="50dp"
+        android:layout_marginEnd="50dp"
+        android:layout_marginBottom="20dp"
+        android:gravity="center"
+        android:hint="Game Price"
+        android:textColor="@color/black"
+        android:textSize="35dp"
+        app:layout_constraintBottom_toTopOf="@+id/imagePreview"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent" />
 
     <ImageView
