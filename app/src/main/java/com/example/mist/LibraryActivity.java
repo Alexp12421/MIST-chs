@@ -30,7 +30,7 @@ public class LibraryActivity extends AppCompatActivity implements View.OnClickLi
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_store);
+        setContentView(R.layout.activity_library);
 
 
         Toolbar toolbar = findViewById(R.id.toolbar);

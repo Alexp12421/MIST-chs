@@ -1,11 +1,14 @@
 package com.example.mist;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -19,19 +22,31 @@ import android.widget.Toast;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class StoreActivity extends AppCompatActivity implements View.OnClickListener , NavigationView.OnNavigationItemSelectedListener {
     private DrawerLayout drawer;
 
     private FirebaseUser user;
-    private DatabaseReference reference;
 
     private String userID;
+
+    RecyclerView recyclerView;
+    List<InsertGame> urlList;
+    ImageAdapter imageAdapter;
+
+    FirebaseDatabase database;
+    DatabaseReference databaseReference;
+    FirebaseStorage firebaseStorage;
 
 
     @Override
@@ -53,6 +68,57 @@ public class StoreActivity extends AppCompatActivity implements View.OnClickList
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
+
+        database = FirebaseDatabase.getInstance();
+        databaseReference = database.getReference().child("images");
+        firebaseStorage = FirebaseStorage.getInstance();
+
+        recyclerView = findViewById(R.id.recyclerView);
+
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(layoutManager);
+
+        urlList = new ArrayList<InsertGame>();
+        imageAdapter = new ImageAdapter(urlList,StoreActivity.this);
+        recyclerView.setAdapter(imageAdapter);
+
+        databaseReference.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+
+                String image = snapshot.child("Game Image").getValue().toString();
+                String name = snapshot.child("Game Name").getValue().toString();
+                String price = snapshot.child("Game Price").getValue().toString();
+//                System.out.println(image);
+//                System.out.println(name);
+//                System.out.println(price);
+                InsertGame insertGame = new InsertGame(image, name, price);
+                urlList.add(insertGame);
+                imageAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
 
 
     }

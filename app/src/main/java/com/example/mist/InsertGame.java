@@ -2,7 +2,7 @@ package com.example.mist;
 
 public class InsertGame {
 
-    String GameName, Image, GamePrice;
+   private String GameName, Image, GamePrice;
 
     public InsertGame() {
 
@@ -36,5 +36,10 @@ public class InsertGame {
 
     public void setGamePrice(String gamePrice) {
         GamePrice = gamePrice;
+    }
+
+    @Override
+    public String toString() {
+        return GameName;
     }
 }

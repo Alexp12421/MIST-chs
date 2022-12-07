@@ -5,6 +5,7 @@ import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -16,6 +17,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
@@ -31,6 +33,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -41,6 +44,7 @@ import com.google.mlkit.vision.barcode.BarcodeScanning;
 import com.google.mlkit.vision.barcode.common.Barcode;
 import com.google.mlkit.vision.common.InputImage;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -63,6 +67,7 @@ public class QRScanActivity extends AppCompatActivity implements View.OnClickLis
 
     private FirebaseUser user;
     private DatabaseReference reference;
+    private DatabaseReference image_ref;
 
     private String userID;
 
@@ -191,9 +196,9 @@ public class QRScanActivity extends AppCompatActivity implements View.OnClickLis
                                 default:
                                     String data = barcode.getDisplayValue();/// data de prelucrat de aici pt wallet/joc
                                     tvResult.setText("Result : " + data);
+                                    setLocalUser();
                                     if(data.startsWith("m/") == true)
                                     {
-                                        setLocalUser();
                                         reference.child(userID).addListenerForSingleValueEvent(new ValueEventListener() {
                                             @Override
                                             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -232,6 +237,75 @@ public class QRScanActivity extends AppCompatActivity implements View.OnClickLis
                                                 Toast.makeText(QRScanActivity.this, "Something wrong", Toast.LENGTH_LONG).show();
                                             }
                                         });
+                                    }else{
+
+                                        image_ref = FirebaseDatabase.getInstance().getReference().child("images");
+                                        image_ref.addValueEventListener(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                                boolean gameExistInStore = false;
+                                                for(DataSnapshot snapshot : dataSnapshot.getChildren()){
+
+                                                    String image_data = snapshot.getValue().toString();
+                                                    //System.out.println(image_data);
+                                                   // System.out.println(image_data.substring(image_data.indexOf("Game Name=") + 10,image_data.indexOf("}")));
+                                                    if(data.equals(image_data.substring(image_data.indexOf("Game Name=") + 10,image_data.indexOf("}")))){
+                                                        gameExistInStore = true;
+                                                        break;
+                                                    }
+                                                }
+
+                                                if(gameExistInStore == true){
+                                                    reference.child(userID).addListenerForSingleValueEvent(new ValueEventListener() {
+                                                        @Override
+                                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                                            User userProfile = snapshot.getValue(User.class);
+
+                                                            if(userProfile != null){
+                                                                String username = userProfile.getUsername();
+                                                                String email = userProfile.getEmail();
+                                                                float wallet = userProfile.getWallet();
+                                                                userProfile.addGame(data);
+                                                                ArrayList<String> library = userProfile.getLibrary();
+
+                                                                HashMap User = new HashMap<>();
+                                                                User.put("email",email);
+                                                                User.put("username",username);
+                                                                User.put("wallet", wallet);
+                                                                User.put("library",library);
+                                                                reference.child(userID).updateChildren(User).addOnCompleteListener(new OnCompleteListener() {
+                                                                    @Override
+                                                                    public void onComplete(@NonNull Task task) {
+                                                                        if(task.isSuccessful()){
+                                                                            Toast.makeText(QRScanActivity.this, "Game successfully added to the library", Toast.LENGTH_LONG).show();
+                                                                        }
+                                                                        else{
+                                                                            Toast.makeText(QRScanActivity.this, "Failed to add the game to the library", Toast.LENGTH_LONG).show();
+                                                                        }
+                                                                    }
+                                                                });
+                                                            }
+
+
+                                                        }
+
+                                                        @Override
+                                                        public void onCancelled(@NonNull DatabaseError error) {
+                                                            Toast.makeText(QRScanActivity.this, "Something wrong", Toast.LENGTH_LONG).show();
+                                                        }
+                                                    });
+
+                                                }else{Toast.makeText(QRScanActivity.this, "The game doesn't exist in MIST", Toast.LENGTH_LONG).show();}
+
+
+                                            }
+
+                                            @Override
+                                            public void onCancelled(@NonNull DatabaseError error) {
+
+                                            }
+                                        });
+
                                     }
                                     break;
                             }

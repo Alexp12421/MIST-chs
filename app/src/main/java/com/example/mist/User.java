@@ -1,9 +1,12 @@
 package com.example.mist;
 
+import java.util.ArrayList;
+
 public class User {
 
     private String username, email;
     private float wallet;
+    private ArrayList<String> library = new ArrayList<String>();
 
     public User(){
 
@@ -24,9 +27,12 @@ public class User {
     public float getWallet(){
         return this.wallet;
     }
+    public ArrayList<String> getLibrary(){return library;}
 
     public void addBalance(float money){
         this.wallet = this.wallet + money;
     }
+    public void substractBalance(float money){this.wallet = this.wallet - money;}
+    public void addGame(String game){this.library.add(game);}
 
 }
