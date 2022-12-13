@@ -136,7 +136,6 @@ public class ImageInsertActivity extends AppCompatActivity implements View.OnCli
                     Task<Uri> downloadUrl = taskSnapshot.getStorage().getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
                         @Override
                         public void onComplete(@NonNull Task<Uri> task) {
-                            //databaseReference.push().setValue(uri.toString());
                             String t = task.getResult().toString();
 
                             DatabaseReference newEntry = databaseReference.push();

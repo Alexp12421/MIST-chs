@@ -132,12 +132,6 @@ public class ProfileActivity extends AppCompatActivity  implements View.OnClickL
             case R.id.go_qrScan:
                 startActivity(new Intent(this, QRScanActivity.class));
                 break;
-
-
-
         }
     }
-
-
-
-    }
+}

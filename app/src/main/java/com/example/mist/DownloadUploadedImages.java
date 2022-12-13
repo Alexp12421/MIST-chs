@@ -60,9 +60,6 @@ public class DownloadUploadedImages extends AppCompatActivity {
                 String image = snapshot.child("Game Image").getValue().toString();
                 String name = snapshot.child("Game Name").getValue().toString();
                 String price = snapshot.child("Game Price").getValue().toString();
-                System.out.println(image);
-                System.out.println(name);
-                System.out.println(price);
                 InsertGame insertGame = new InsertGame(image, name, price);
                 urlList.add(insertGame);
                 imageAdapter.notifyDataSetChanged();
