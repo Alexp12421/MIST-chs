@@ -140,7 +140,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
                                 }
                                 if(gameExistsLib == false)
                                 {
-                                    if(userProfile.getWallet() > gamePrice_Float){
+                                    if(userProfile.getWallet() >= gamePrice_Float){
                                         userProfile.substractBalance(gamePrice_Float);
                                         userProfile.addGame(gamename.getText().toString().trim());
                                     }

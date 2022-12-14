@@ -20,11 +20,27 @@
             <item android:id="@+id/balance"
                 android:icon="@drawable/ic_baseline_attach_money_24"
                 android:title="Balance"/>
-            <item android:id="@+id/logout"
+        </menu>
+
+    </item>
+
+    <group android:checkableBehavior="single">
+        <item></item>
+        <item></item>
+        <item></item>
+        <item></item>
+        <item></item>
+
+        <item android:title="Logout">
+            <menu><item android:id="@+id/logout"
                 android:icon="@drawable/ic_baseline_logout_24"
                 android:title="Logout"/>
+            </menu>
 
-        </menu>
-    </item>
+        </item>
+
+
+
+    </group>
 
 </menu>
