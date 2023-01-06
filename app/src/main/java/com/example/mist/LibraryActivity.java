@@ -111,7 +111,7 @@ public class LibraryActivity extends AppCompatActivity implements View.OnClickLi
                 String name = snapshot.child("Game Name").getValue().toString();
 
                 for(String i : userLibrary){
-                    if (i.equals(name)) {
+                    if (i.equals(name) && !i.equals(null)) {
                         InsertGame insertGame = new InsertGame(image, name, "");
                         urlListLibrary.add(insertGame);
                         imageAdapterLibrary.notifyDataSetChanged();

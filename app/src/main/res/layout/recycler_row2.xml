@@ -26,6 +26,7 @@
         android:layout_marginTop="44dp"
         android:layout_marginEnd="8dp"
         android:text="Game Name"
+        android:textColor="@color/black"
         android:textSize="25dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/imageViewPreviewLibrary"
