@@ -110,12 +110,18 @@ public class LibraryActivity extends AppCompatActivity implements View.OnClickLi
                 String image = snapshot.child("Game Image").getValue().toString();
                 String name = snapshot.child("Game Name").getValue().toString();
 
+                try {
                 for(String i : userLibrary){
-                    if (i.equals(name) && !i.equals(null)) {
-                        InsertGame insertGame = new InsertGame(image, name, "");
-                        urlListLibrary.add(insertGame);
-                        imageAdapterLibrary.notifyDataSetChanged();
-                    }
+
+                        if (i.equals(name) == true) {
+                            InsertGame insertGame = new InsertGame(image, name, "");
+                            urlListLibrary.add(insertGame);
+                            imageAdapterLibrary.notifyDataSetChanged();
+                        }
+
+                }
+                }catch ( Exception e){
+                    Toast.makeText(LibraryActivity.this, "Game is null", Toast.LENGTH_SHORT).show();
                 }
             }
 

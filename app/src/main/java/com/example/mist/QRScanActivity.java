@@ -43,6 +43,8 @@ import com.google.mlkit.vision.barcode.BarcodeScanner;
 import com.google.mlkit.vision.barcode.BarcodeScanning;
 import com.google.mlkit.vision.barcode.common.Barcode;
 import com.google.mlkit.vision.common.InputImage;
+import com.journeyapps.barcodescanner.ScanContract;
+import com.journeyapps.barcodescanner.ScanOptions;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -54,6 +56,7 @@ public class QRScanActivity extends AppCompatActivity implements View.OnClickLis
     private static final int READ_STORAGE_PERMISSION_CODE = 144;
     private static final int WRITE_STORAGE_PERMISSION_CODE = 144;
     private static final String TAG ="MyTag" ;
+    private String specialString;
 
     Button qrCodeButton;
     TextView tvResult;
@@ -61,6 +64,21 @@ public class QRScanActivity extends AppCompatActivity implements View.OnClickLis
 
     ActivityResultLauncher<Intent> cameraLauncher;
     ActivityResultLauncher<Intent> galleryLauncher;
+    ActivityResultLauncher<ScanOptions> barLauncher = registerForActivityResult(new ScanContract(),result ->
+    {
+        if(result.getContents() != null){
+            AlertDialog.Builder builder = new AlertDialog.Builder(QRScanActivity.this);
+            builder.setTitle("Result");
+            builder.setMessage(result.getContents());
+            specialString = result.getContents();
+            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    dialogInterface.dismiss();
+                }
+            }).show();
+        }
+    });
 
     InputImage inputImage;
     BarcodeScanner scanner;
@@ -105,7 +123,7 @@ public class QRScanActivity extends AppCompatActivity implements View.OnClickLis
                 new ActivityResultCallback<ActivityResult>() {
                     @Override
                     public void onActivityResult(ActivityResult result) {
-                        //Handle picture from gallety
+                        //Handle picture from gallery
                         Intent data = result.getData();
                         try {
                             inputImage = InputImage.fromFilePath(QRScanActivity.this, data.getData());
@@ -124,14 +142,127 @@ public class QRScanActivity extends AppCompatActivity implements View.OnClickLis
                 String [] options = {"camera","gallery"};
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(QRScanActivity.this);
-                builder.setTitle("Pick a option");
+                builder.setTitle("Pick an option");
                 builder.setItems(options, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                             if(i == 0){
                                 //handler for camera
-                                Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                                cameraLauncher.launch(cameraIntent);
+                               /* Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                                cameraLauncher.launch(cameraIntent);*/
+                                scanCode();
+                                String data = specialString;
+                                setLocalUser();
+                                if(data.startsWith("m/") == true)
+                                {
+                                    reference.child(userID).addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                            User userProfile = snapshot.getValue(User.class);
+
+                                            if(userProfile != null){
+                                                String username = userProfile.getUsername();
+                                                String email = userProfile.getEmail();
+
+                                                //parsing the qr code to get the value of the balance we are adding to the wallet
+                                                userProfile.addBalance(Float.valueOf(data.substring(data.indexOf("/")+1,data.indexOf("-"))));
+                                                float wallet = userProfile.getWallet();
+
+                                                HashMap User = new HashMap<>();
+                                                User.put("email",email);
+                                                User.put("username",username);
+                                                User.put("wallet", wallet);
+                                                reference.child(userID).updateChildren(User).addOnCompleteListener(new OnCompleteListener() {
+                                                    @Override
+                                                    public void onComplete(@NonNull Task task) {
+                                                        if(task.isSuccessful()){
+                                                            Toast.makeText(QRScanActivity.this, "Money successfully added to the wallet", Toast.LENGTH_LONG).show();
+                                                        }
+                                                        else{
+                                                            Toast.makeText(QRScanActivity.this, "Failed to add money to the wallet", Toast.LENGTH_LONG).show();
+                                                        }
+                                                    }
+                                                });
+                                            }
+
+
+                                        }
+
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError error) {
+                                            Toast.makeText(QRScanActivity.this, "Something wrong", Toast.LENGTH_LONG).show();
+                                        }
+                                    });
+                                }else{
+
+                                    image_ref = FirebaseDatabase.getInstance().getReference().child("images");
+                                    image_ref.addValueEventListener(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                            boolean gameExistInStore = false;
+                                            for(DataSnapshot snapshot : dataSnapshot.getChildren()){
+
+                                                String image_data = snapshot.getValue().toString();
+                                                //System.out.println(image_data);
+                                                // System.out.println(image_data.substring(image_data.indexOf("Game Name=") + 10,image_data.indexOf("}")));
+                                                if(data.equals(image_data.substring(image_data.indexOf("Game Name=") + 10,image_data.indexOf("}")))){
+                                                    gameExistInStore = true;
+                                                    break;
+                                                }
+                                            }
+
+                                            if(gameExistInStore == true){
+                                                reference.child(userID).addListenerForSingleValueEvent(new ValueEventListener() {
+                                                    @Override
+                                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                                        User userProfile = snapshot.getValue(User.class);
+
+                                                        if(userProfile != null){
+                                                            String username = userProfile.getUsername();
+                                                            String email = userProfile.getEmail();
+                                                            float wallet = userProfile.getWallet();
+                                                            userProfile.addGame(data);
+                                                            ArrayList<String> library = userProfile.getLibrary();
+
+                                                            HashMap User = new HashMap<>();
+                                                            User.put("email",email);
+                                                            User.put("username",username);
+                                                            User.put("wallet", wallet);
+                                                            User.put("library",library);
+                                                            reference.child(userID).updateChildren(User).addOnCompleteListener(new OnCompleteListener() {
+                                                                @Override
+                                                                public void onComplete(@NonNull Task task) {
+                                                                    if(task.isSuccessful()){
+                                                                        Toast.makeText(QRScanActivity.this, "Game successfully added to the library", Toast.LENGTH_LONG).show();
+                                                                    }
+                                                                    else{
+                                                                        Toast.makeText(QRScanActivity.this, "Failed to add the game to the library", Toast.LENGTH_LONG).show();
+                                                                    }
+                                                                }
+                                                            });
+                                                        }
+
+
+                                                    }
+
+                                                    @Override
+                                                    public void onCancelled(@NonNull DatabaseError error) {
+                                                        Toast.makeText(QRScanActivity.this, "Something wrong", Toast.LENGTH_LONG).show();
+                                                    }
+                                                });
+
+                                            }else{Toast.makeText(QRScanActivity.this, "The game doesn't exist in MIST", Toast.LENGTH_LONG).show();}
+
+
+                                        }
+
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError error) {
+
+                                        }
+                                    });
+
+                                }
                             }else{
                                 // handler for gallery
                                 Intent storageIntent = new Intent();
@@ -146,6 +277,15 @@ public class QRScanActivity extends AppCompatActivity implements View.OnClickLis
         });
 
 
+    }
+
+    private void scanCode() {
+        ScanOptions options = new ScanOptions();
+        options.setPrompt("Volume up to flash on");
+        options.setBeepEnabled(true);
+        options.setOrientationLocked(true);
+        options.setCaptureActivity(CaptureAct.class);
+        barLauncher.launch(options);
     }
 
     public void setLocalUser(){

@@ -30,7 +30,8 @@
         android:textSize="25dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/imageViewPreviewLibrary"
-        app:layout_constraintTop_toTopOf="@+id/imageViewPreviewLibrary" />
+        app:layout_constraintTop_toTopOf="@+id/imageViewPreviewLibrary"
+        android:textColor="@color/black"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
