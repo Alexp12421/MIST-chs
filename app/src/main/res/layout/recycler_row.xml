@@ -29,7 +29,8 @@
         android:textSize="25dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/imageViewPreview"
-        app:layout_constraintTop_toTopOf="@+id/imageViewPreview" />
+        app:layout_constraintTop_toTopOf="@+id/imageViewPreview"
+        android:textColor="@color/black"/>
 
     <TextView
         android:id="@+id/imageGamePrice"
@@ -40,7 +41,8 @@
         android:textSize="25dp"
         app:layout_constraintEnd_toEndOf="@id/imageGameName"
         app:layout_constraintStart_toStartOf="@+id/imageGameName"
-        app:layout_constraintTop_toBottomOf="@+id/imageGameName" />
+        app:layout_constraintTop_toBottomOf="@+id/imageGameName"
+        android:textColor="@color/black"/>
 
     <Button
         android:id="@+id/buy_button"
