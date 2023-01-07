@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:background="@drawable/store_background"
     android:layout_height="match_parent"
     tools:context=".ImageInsertActivity">
 
@@ -33,7 +34,8 @@
         android:layout_marginBottom="30dp"
         android:gravity="center"
         android:hint="Game Name"
-        android:textColor="@color/black"
+        android:textColorHint="@color/white"
+        android:textColor="@color/white"
         android:textSize="35dp"
         app:layout_constraintBottom_toTopOf="@+id/gamePrice"
         app:layout_constraintEnd_toEndOf="parent"
@@ -49,7 +51,8 @@
         android:layout_marginBottom="20dp"
         android:gravity="center"
         android:hint="Game Price"
-        android:textColor="@color/black"
+        android:textColor="@color/white"
+        android:textColorHint="@color/white"
         android:textSize="35dp"
         app:layout_constraintBottom_toTopOf="@+id/imagePreview"
         app:layout_constraintEnd_toEndOf="parent"

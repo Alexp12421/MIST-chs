@@ -21,7 +21,7 @@
             android:layout_height="674dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            android:background="@color/white">
+            android:background="@null">
 
         </androidx.recyclerview.widget.RecyclerView>
     </androidx.constraintlayout.widget.ConstraintLayout>
