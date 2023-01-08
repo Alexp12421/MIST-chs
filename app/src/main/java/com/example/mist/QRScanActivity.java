@@ -59,6 +59,7 @@ public class QRScanActivity extends AppCompatActivity implements View.OnClickLis
     private String specialString;
 
     Button qrCodeButton;
+    TextView back_button;
     TextView tvResult;
     ImageView qrImgage;
 
@@ -83,6 +84,8 @@ public class QRScanActivity extends AppCompatActivity implements View.OnClickLis
         qrCodeButton = findViewById(R.id.scanButton);
         qrImgage = findViewById(R.id.imgQr);
         tvResult = findViewById(R.id.tvResult);
+        back_button = (TextView) findViewById(R.id.back_profile_button);
+        back_button.setOnClickListener(this);
 
         scanner = BarcodeScanning.getClient();
         cameraLauncher = registerForActivityResult(
@@ -422,6 +425,7 @@ public class QRScanActivity extends AppCompatActivity implements View.OnClickLis
                                                                         }
                                                                         else{
                                                                             Toast.makeText(QRScanActivity.this, "Failed to add the game to the library", Toast.LENGTH_LONG).show();
+
                                                                         }
                                                                     }
                                                                 });
